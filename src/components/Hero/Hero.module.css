@@ -1,0 +1,39 @@
+.hero {
+  position: relative;
+  height: 700px;
+  background: url("/src/img/banner.jpgnpm") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  text-align: center;
+  color: #fff;
+}
+
+.overlay h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.overlay p {
+  font-size: 20px;
+  margin-bottom: 32px;
+}
+
+.ctaBtn {
+  display: inline-block;
+  background: #3470ff;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.ctaBtn:hover {
+  background: #2554cc;
+}
