@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
 import Home from "./pages/Home/Home";
 import Catalog from "./pages/Catalog/Catalog";
 import CarDetails from "./pages/CarDetails/CarDetails";
@@ -6,9 +7,11 @@ import CarDetails from "./pages/CarDetails/CarDetails";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/catalog" element={<Catalog />} />
-      <Route path="/catalog/:id" element={<CarDetails />} />
+      <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/catalog/:id" element={<CarDetails />} />
+      </Route>
     </Routes>
   );
 }

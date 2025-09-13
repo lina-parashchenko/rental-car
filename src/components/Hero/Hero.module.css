@@ -1,10 +1,11 @@
 .hero {
   position: relative;
   height: 700px;
-  background: url("/src/img/banner.jpgnpm") center/cover no-repeat;
+  background: url("/src/img/banner.jpg") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 436px;
 }
 
 .overlay {
@@ -27,13 +28,15 @@
   display: inline-block;
   background: #3470ff;
   color: #fff;
-  padding: 12px 24px;
-  border-radius: 8px;
+  padding: 12px 99px;
+  border-radius: 12px;
   font-size: 18px;
   text-decoration: none;
   transition: background 0.3s;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .ctaBtn:hover {
-  background: #2554cc;
+  background: #0b44cd;
 }

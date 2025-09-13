@@ -6,7 +6,7 @@ import { fetchCarById } from "../../redux/carsSlice";
 export default function CarDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const car = useSelector((state) => state.cars.currentCar);
+  const car = useSelector((state) => state.cars);
 
   useEffect(() => {
     dispatch(fetchCarById(id));
