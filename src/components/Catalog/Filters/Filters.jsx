@@ -1,59 +1,113 @@
 import { useState } from "react";
+import Select from "react-select";
+import { useSelector } from "react-redux";
+import { selectBrands, selectPrices } from "../../../redux/carsSelectors";
 import styles from "./Filters.module.css";
 
+const customSelectStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    height: "44px",
+    width: "204px",
+    border: state.isFocused ? "1.5px solid #3470FF" : "1px solid #d9d9d9",
+    borderRadius: "12px",
+    fontWeight: 500,
+    fontFamily: "Manrope, sans-serif",
+    fontSize: "16px",
+    lineHeight: 1.25,
+    color: "#101828",
+    background: "#f7f7f7",
+    boxShadow: state.isFocused ? "0 0 0 4px rgba(52, 112, 255, 0.15)" : "none",
+    "&:hover": { borderColor: "#3470FF" },
+    minHeight: "unset",
+  }),
+  valueContainer: (provided) => ({ ...provided, padding: "0 12px" }),
+  input: (provided) => ({ ...provided, margin: 0, padding: 0 }),
+  indicatorsContainer: (provided) => ({ ...provided, height: "auto" }),
+  menu: (provided) => ({
+    ...provided,
+    borderRadius: "8px",
+    padding: "8px",
+    boxShadow:
+      "0 0 1px 0 rgba(0, 0, 0, 0.4), 0 8px 24px -6px rgba(0, 0, 0, 0.16)",
+    background: "#fff",
+    marginTop: "4px",
+    zIndex: 20,
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    padding: "10px 12px",
+    borderRadius: "4px",
+    backgroundColor: state.isFocused ? "#f5f5f5" : "#fff",
+    color: "#000",
+    cursor: "pointer",
+    "&:active": { backgroundColor: "#e6e6e6" },
+  }),
+};
+
 export default function Filters({ onFilter }) {
-  const [localFilters, setLocalFilters] = useState({
-    brand: "",
-    price: "",
-    from: "",
-    to: "",
-  });
+  const brands = useSelector(selectBrands);
+  const prices = useSelector(selectPrices);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setLocalFilters((prev) => ({ ...prev, [name]: value }));
-  };
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState(null);
+  const [mileageFrom, setMileageFrom] = useState("");
+  const [mileageTo, setMileageTo] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onFilter(localFilters); // передаємо наверх тільки після Search
+  const handleSearch = () => {
+    onFilter({
+      brand: selectedBrand ? selectedBrand.value : "",
+      price: selectedPrice ? Number(selectedPrice.value) : "",
+      from: mileageFrom ? Number(mileageFrom) : "",
+      to: mileageTo ? Number(mileageTo) : "",
+    });
   };
 
   return (
-    <form className={styles.filters} onSubmit={handleSubmit}>
-      <select name="brand" value={localFilters.brand} onChange={handleChange}>
-        <option value="">Choose a brand</option>
-        {/* Тут будуть бренди з API */}
-        <option value="Buick">Buick</option>
-        <option value="Volvo">Volvo</option>
-        <option value="Subaru">Subaru</option>
-      </select>
+    <div className={styles.filters}>
+      <div className={styles.labelInput}>
+        <p className={styles.mileageLabel}>Car brand</p>
+        <Select
+          options={brands}
+          styles={customSelectStyles}
+          placeholder="Choose a brand"
+          onChange={setSelectedBrand}
+        />
+      </div>
 
-      <select name="price" value={localFilters.price} onChange={handleChange}>
-        <option value="">Choose a price</option>
-        <option value="30">до $30</option>
-        <option value="40">до $40</option>
-        <option value="50">до $50</option>
-        <option value="60">до $60</option>
-      </select>
+      <div className={styles.labelInput}>
+        <p className={styles.mileageLabel}>Price/hour</p>
+        <Select
+          options={prices}
+          styles={customSelectStyles}
+          placeholder="Choose a price"
+          onChange={setSelectedPrice}
+        />
+      </div>
 
-      <input
-        type="number"
-        name="from"
-        placeholder="From"
-        value={localFilters.from}
-        onChange={handleChange}
-      />
+      <div className={styles.labelInput}>
+        <p className={styles.mileageLabel}>Car mileage / km</p>
+        <div className={styles.mileage}>
+          <input
+            type="number"
+            placeholder="From"
+            className={styles.input}
+            value={mileageFrom}
+            onChange={(e) => setMileageFrom(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="To"
+            className={styles.input}
+            value={mileageTo}
+            onChange={(e) => setMileageTo(e.target.value)}
+          />
+        </div>
+      </div>
 
-      <input
-        type="number"
-        name="to"
-        placeholder="To"
-        value={localFilters.to}
-        onChange={handleChange}
-      />
-
-      <button type="submit">Search</button>
-    </form>
+      <button className={styles.button} onClick={handleSearch}>
+        Search
+      </button>
+    </div>
   );
 }

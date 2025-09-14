@@ -1,7 +1,8 @@
 .header {
-  background-color: #fff;
-  border-bottom: 1px solid #eaeaea;
-  padding: 20px 40px;
+  background: #f2f4f7;
+  margin-bottom: 84px;
+  padding-top: 26px;
+  padding-bottom: 26px;
 }
 
 .container {

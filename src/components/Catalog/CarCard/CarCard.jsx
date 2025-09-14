@@ -1,10 +1,11 @@
-// src/components/CarCard.jsx
+import styles from "./CarCard.module.css";
+
 export default function CarCard({ car }) {
   return (
-    <div className="car-card">
+    <div className={styles.carcCard}>
       <img src={car.img} alt={`${car.make} ${car.model}`} />
 
-      <div className="car-info">
+      <div className={styles.carIinfo}>
         <h2>
           {car.make} {car.model}, {car.year}
         </h2>

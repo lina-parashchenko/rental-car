@@ -1,0 +1,32 @@
+.catalog {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* сітка карток */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* кнопка load more */
+.load-more {
+  text-align: center;
+}
+
+.load-more button {
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #3470ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.load-more button:hover {
+  background: #2557d6;
+}

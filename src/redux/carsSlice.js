@@ -1,4 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
+
+export const selectCars = (state) => state.cars.items;
+
+export const selectBrands = createSelector([selectCars], (cars) =>
+  [...new Set(cars.map((car) => car.make))].map((brand) => ({
+    value: brand,
+    label: brand,
+  }))
+);
+
+export const selectPrices = createSelector([selectCars], (cars) =>
+  [...new Set(cars.map((car) => car.rentalPrice))].map((price) => ({
+    value: price,
+    label: price,
+  }))
+);
 
 // отримати всі авто
 export const fetchCars = createAsyncThunk(
@@ -39,16 +56,23 @@ const carsSlice = createSlice({
       // fetch all
       .addCase(fetchCars.pending, (state) => {
         state.loading = true;
+        console.log("fetchCars pending...");
       })
       .addCase(fetchCars.fulfilled, (state, action) => {
         state.loading = false;
 
-        // 👇 API повертає об'єкт, тому дістаємо саме масив
-        state.items = action.payload.cars;
+        if (Array.isArray(action.payload)) {
+          state.items = action.payload;
+        } else if (action.payload.cars) {
+          state.items = action.payload.cars;
+        } else {
+          state.items = [];
+        }
       })
       .addCase(fetchCars.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        console.error("fetchCars rejected:", action.payload);
       })
       // fetch by id
       .addCase(fetchCarById.pending, (state) => {

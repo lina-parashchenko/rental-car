@@ -7,7 +7,7 @@ import Filters from "../../components/Catalog/Filters/Filters";
 
 export default function CatalogPage() {
   const dispatch = useDispatch();
-  const cars = useSelector((state) => state.cars.items);
+  const cars = useSelector((state) => state.cars.items) || [];
   const loading = useSelector((state) => state.cars.loading);
   const error = useSelector((state) => state.cars.error);
 
@@ -25,33 +25,25 @@ export default function CatalogPage() {
   if (loading) return <p>Loading cars...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
-  // унікальні бренди з бази
-  const brands = [...new Set(cars.map((car) => car.make))];
-
-  // застосування фільтрів
   const filteredCars = cars.filter((car) => {
-    if (filters.brand && car.make !== filters.brand) return false;
-    if (
-      filters.price &&
-      Number(car.rentalPrice.replace("$", "")) > filters.price
-    )
+    const priceNum = Number(car.rentalPrice.replace("$", ""));
+    if (filters.brand && car.make.toLowerCase() !== filters.brand.toLowerCase())
       return false;
+    if (filters.price && priceNum > filters.price) return false;
     if (filters.from && car.mileage < filters.from) return false;
     if (filters.to && car.mileage > filters.to) return false;
     return true;
   });
 
-  if (loading) return <p>Loading cars...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
-
   return (
     <section>
-      <Filters brands={brands} onFilter={setFilters} />
-      <h2>Catalog</h2>
+      <Filters onFilter={setFilters} />
       <div className={styles.catalogGrid}>
-        {filteredCars.map((car) => (
-          <CarCardSmall key={car.id} car={car} />
-        ))}
+        {filteredCars.length > 0 ? (
+          filteredCars.map((car) => <CarCardSmall key={car.id} car={car} />)
+        ) : (
+          <p>No cars found with selected filters</p>
+        )}
       </div>
     </section>
   );
